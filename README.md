@@ -1,6 +1,68 @@
 # go-api-test
 
-## Start all containers
+## API test using Go test
+
+1. Run Go test
+
+```shell
+go test ./test/... -v
+2025/10/12 02:05:14 github.com/testcontainers/testcontainers-go - Connected to docker: 
+  Server Version: 25.0.2
+  API Version: 1.44
+  Operating System: Docker Desktop
+  Total Memory: 7941 MB
+  Testcontainers for Go Version: v0.39.0
+  Resolved Docker Host: unix:///Users/uchidatomomasa/.docker/run/docker.sock
+  Resolved Docker Socket Path: /var/run/docker.sock
+  Test SessionID: 43879c1cb16a86c8764d8f6f74ce2a00954159357831a7efffc1a8239d947e0d
+  Test ProcessID: 3378935c-06a8-43fc-ab0a-4319cc6bfa82
+2025/10/12 02:05:14 🐳 Creating container for image gcr.io/cloud-spanner-emulator/emulator:latest
+2025/10/12 02:05:14 🐳 Creating container for image testcontainers/ryuk:0.13.0
+2025/10/12 02:05:14 ✅ Container created: e69acb697005
+2025/10/12 02:05:14 🐳 Starting container: e69acb697005
+2025/10/12 02:05:14 ✅ Container started: e69acb697005
+2025/10/12 02:05:14 ⏳ Waiting for container id e69acb697005 image: testcontainers/ryuk:0.13.0. Waiting for: &{Port:8080/tcp timeout:<nil> PollInterval:100ms skipInternalCheck:false skipExternalCheck:false}
+2025/10/12 02:05:15 Shell not executable in container, only external port validated
+2025/10/12 02:05:15 🔔 Container is ready: e69acb697005
+2025/10/12 02:05:15 ✅ Container created: 69356a870ae1
+2025/10/12 02:05:15 🐳 Starting container: 69356a870ae1
+2025/10/12 02:05:15 ✅ Container started: 69356a870ae1
+2025/10/12 02:05:15 ⏳ Waiting for container id 69356a870ae1 image: gcr.io/cloud-spanner-emulator/emulator:latest. Waiting for: &{timeout:<nil> Log:Cloud Spanner emulator running IsRegexp:false Occurrence:1 PollInterval:100ms check:<nil> submatchCallback:<nil> re:<nil> log:[]}
+2025/10/12 02:05:16 🔔 Container is ready: 69356a870ae1
+Spanner emulator running at: localhost:50941
+SPANNER_EMULATOR_HOST: localhost:50941
+Instance created: projects/test-project/instances/test-instance
+=== RUN   TestSomething
+=== PAUSE TestSomething
+=== CONT  TestSomething
+Database created: test-db
+
+=== RUN   TestSomething/runbook/go-test-ver.yaml(01559caa60f32e80a95eb254be15cecbbcd8f405)
+{
+  "user_id": "87b1036f-dbb7-408d-80ca-b993ea97cca9"
+}
+{
+  "user_id": "a46792c9-740e-4573-ac3b-485bf788a26e"
+}
+[
+  {
+    "Name": "test-name-2",
+    "UserID": "a46792c9-740e-4573-ac3b-485bf788a26e"
+  },
+  {
+    "Name": "test-name-1",
+    "UserID": "87b1036f-dbb7-408d-80ca-b993ea97cca9"
+  }
+]
+--- PASS: TestSomething (0.22s)
+    --- PASS: TestSomething/runbook/go-test-ver.yaml(01559caa60f32e80a95eb254be15cecbbcd8f405) (0.12s)
+PASS
+ok  	github.com/tom-uchida/go-api-test/test	4.209s
+```
+
+## API test using Docker containers
+
+1. Start all containers
 
 ```shell
 > docker compose up --build
@@ -60,10 +122,10 @@ spanner-emulator-1  | 2025/10/04 15:25:38 gateway.go:152: REST server listening 
 spanner-emulator-1  | 2025/10/04 15:25:38 gateway.go:153: gRPC server listening at 0.0.0.0:9010
 ```
 
-## API test with runn
+2. Run runn
 
 ```shell
-> SPANNER_EMULATOR_HOST=0.0.0.0:9010 runn run runbook/create_user.yaml
+> SPANNER_EMULATOR_HOST=0.0.0.0:9010 runn run runbook/docker-containers-ver.yaml
 {
   "user_id": "7b87e886-a73c-4820-a079-f44d12099d09"
 }
@@ -83,10 +145,4 @@ spanner-emulator-1  | 2025/10/04 15:25:38 gateway.go:153: gRPC server listening 
 .
 
 1 scenario, 0 skipped, 0 failures
-```
-
-## Go test
-
-```shell
-coming soon...
 ```
