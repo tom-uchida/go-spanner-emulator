@@ -43,7 +43,7 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestSomething(t *testing.T) {
+func Test_CreateUser(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
 
