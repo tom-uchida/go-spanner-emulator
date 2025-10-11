@@ -1,19 +1,16 @@
-// testcontainers-go を使用して Spanner Emulator を起動するサンプル
-
 package main
 
 import (
 	"context"
 	"log"
-	"net/http"
+	"net/http/httptest"
+	"testing"
 
 	"github.com/tom-uchida/go-api-test/internal"
 	"github.com/tom-uchida/go-api-test/internal/db"
 )
 
-const port = "8080"
-
-func main() {
+func TestSomething(t *testing.T) {
 	ctx := context.Background()
 
 	parent, err := db.CreateSpannerInstance(ctx)
@@ -31,8 +28,6 @@ func main() {
 	defer client.Close()
 
 	mux := internal.NewHandler(client)
-	http.Handle("/", mux)
-
-	log.Printf("\nServer running at: localhost:%s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	server := httptest.NewServer(mux)
+	defer server.Close()
 }
